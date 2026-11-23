@@ -183,6 +183,20 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
 .contacts dt { color: var(--muted); font-family: var(--font-mono); font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.08em; align-self: center; }
 .contacts dd { margin: 0; }
 
+/* Skill chains for the scenario workflows */
+.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3em 0.35em; }
+.chain code, .agents code { white-space: nowrap; }
+.chain .arr { color: var(--muted); font-family: var(--font-mono); }
+.chain .opt { opacity: 0.7; }
+.flows table { font-size: 0.6em; }
+.flows td { padding: 0.45em 0.6em; vertical-align: middle; }
+.flows td:first-child { font-family: var(--font-display); font-weight: 700; white-space: nowrap; }
+.flows td:first-child span { display: block; font-family: var(--font-mono); font-weight: 500; font-size: 0.8em; color: var(--accent); }
+.flows td:last-child { color: var(--muted); }
+.step-list { display: grid; gap: 0.45em; font-size: 0.8em; }
+.step-list .box { display: grid; grid-template-columns: 1.6em 1fr; gap: 0.6em; align-items: start; padding: 0.55em 0.9em; }
+.step-list .n { font-family: var(--font-mono); font-weight: 600; color: var(--accent); }
+.step-list .box p { margin: 0.2em 0 0; color: var(--muted); font-size: 0.9em; }
 @media (prefers-reduced-motion: reduce) { .reveal .slides section { transition: none !important; } }
 </style>
 
@@ -285,7 +299,7 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
   <h2>Theory in small doses, then build</h2>
   <div class="timeline dense">
     <div class="t">0:00</div><div>Welcome, start your environment</div><div class="d">10'</div>
-    <div class="t">0:10</div><div>Why spec-driven? Methods, AI Unified Process, use cases</div><div class="d">25'</div>
+    <div class="t">0:10</div><div>Why spec-driven? Methods, AI Unified Process, five scenarios, use cases</div><div class="d">25'</div>
     <div class="t">0:35</div><div>The project</div><div class="d">5'</div>
     <div class="t">0:40</div><div class="lab">Lab 1 · Use cases and entity model</div><div class="d">20'</div>
     <div class="t">1:00</div><div>Writing good use cases</div><div class="d">5'</div>
@@ -295,7 +309,7 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
     <div class="t">1:50</div><div class="lab">Lab 3 · Implement the use case</div><div class="d">25'</div>
     <div class="t">2:15</div><div class="lab">Lab 4 · Tests and coverage</div><div class="d">15'</div>
     <div class="t">2:30</div><div class="lab">Lab 5 · Change a requirement</div><div class="d">15'</div>
-    <div class="t">2:45</div><div>Lessons from projects, token economy, risks</div><div class="d">10'</div>
+    <div class="t">2:45</div><div>New features, brownfield, lessons from projects, risks</div><div class="d">10'</div>
     <div class="t">2:55</div><div>Wrap-up and questions</div><div class="d">5'</div>
   </div>
 </section>
@@ -326,7 +340,7 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
 </section>
 
 <section>
-  <div class="eyebrow"><b>Foundations</b><span>0:13</span></div>
+  <div class="eyebrow"><b>Foundations</b><span>0:12</span></div>
   <h2>AI is not a compiler</h2>
   <div class="cols">
     <div>
@@ -352,7 +366,7 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
 </section>
 
 <section>
-  <div class="eyebrow"><b>Choosing a method</b><span>0:16</span></div>
+  <div class="eyebrow"><b>Choosing a method</b><span>0:14</span></div>
   <h2>Five frameworks at a glance</h2>
   <table>
     <tr><th>Framework</th><th>Core idea</th><th>Sweet spot</th></tr>
@@ -366,7 +380,27 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
 </section>
 
 <section>
-  <div class="eyebrow"><b>AI Unified Process</b><span>0:19</span></div>
+  <div class="eyebrow"><b>Choosing a method</b><span>0:16</span></div>
+  <h2>Describe the system, or describe the change?</h2>
+  <table>
+    <tr><th></th><th>AI Unified Process</th><th>OpenSpec</th></tr>
+    <tr><td><b>What it is</b></td><td>A process: phases, roles, review gates, plus the skills</td><td>A lightweight toolkit and workflow</td></tr>
+    <tr><td><b>Unit of work</b></td><td>The use case: one user goal, from spec to tested code</td><td>The change: a proposal with tasks and spec deltas</td></tr>
+    <tr><td><b>Central artifacts</b></td><td>Requirements, entity model, use case specifications</td><td>Proposal, tasks, design, specs per capability</td></tr>
+    <tr class="hl"><td><b>Source of truth</b></td><td>The use cases, for the whole lifetime of the system. A change edits the use case; git keeps the history</td><td>The specs folder, updated when a change is archived. The reasoning lives in the change history</td></tr>
+    <tr><td><b>Sweet spot</b></td><td>Brownfield, modernization, long-lived and regulated systems, several teams</td><td>Incremental changes, small teams, quick start</td></tr>
+  </table>
+  <p class="kicker" style="font-size:0.85em">Ask: in five years, where does a new team member read what the system does?</p>
+  <aside class="notes">
+    Both keep living specs, so this is not "living vs. throw-away". The difference is the unit of work and the shape of the truth.
+    AI Unified Process: the reader opens one use case and sees the current behavior, with business rules traced to code and tests.
+    OpenSpec: the reader opens the capability spec; the why of each change sits in the archived proposals.
+    For the Agentic Platform: the process part (roles, gates) is what maps to dedicated agents. Details on 1 December.
+  </aside>
+</section>
+
+<section>
+  <div class="eyebrow"><b>AI Unified Process</b><span>0:18</span></div>
   <h2>AI Unified Process at a glance</h2>
   <div class="diagram"><img src="aiup-workflow.svg" style="max-height:none; width:100%" alt="The skills of the AI Unified Process by phase: /requirements in Inception; /entity-model, /use-case-diagram, the optional /business-process, and /stack in Elaboration; /use-case-spec, /use-case-implement, /use-case-test, /use-case-coverage, /test-case and /test-case-implement in Construction; /acceptance-protocol, /user-guide and /release-notes in Transition. /spec-review, /next, /open-questions and /reverse-engineer run at any point."></div>
   <aside class="notes">
@@ -378,7 +412,7 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
 </section>
 
 <section>
-  <div class="eyebrow"><b>AI Unified Process</b><span>0:22</span></div>
+  <div class="eyebrow"><b>AI Unified Process</b><span>0:20</span></div>
   <h2>Greenfield workflow</h2>
   <div class="diagram"><img src="greenfield.png" style="max-height:330px" alt="The requirements engineer creates use cases and the entity model. The AI agent reads them, using skills, MCP and guidelines, and generates code and tests. The software engineer reviews the use case, the code and the tests."></div>
   <div class="diagram-note">
@@ -390,7 +424,7 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
 </section>
 
 <section>
-  <div class="eyebrow"><b>AI Unified Process</b><span>0:25</span></div>
+  <div class="eyebrow"><b>AI Unified Process</b><span>0:22</span></div>
   <h2>Brownfield workflow</h2>
   <div class="diagram"><img src="brownfield.png" style="max-height:290px" alt="The AI agent reads the code, tests and documentation of the existing system and generates use cases and the entity model. The software engineer and the requirements engineer review them."></div>
   <div class="diagram-note">
@@ -398,6 +432,25 @@ body { background: var(--paper); color: var(--ink); margin: 0; }
     <div><b>The agent writes the spec</b><code>/reverse-engineer</code> generates use cases and the entity model.</div>
     <div><b>Humans review, then spec-first</b>The code shows what the system does, not what it should do. From here, every change starts in the spec.</div>
   </div>
+</section>
+
+<section class="flows">
+  <div class="eyebrow"><b>AI Unified Process</b><span>0:24</span></div>
+  <h2>Five scenarios, one set of skills</h2>
+  <table>
+    <tr><th>Scenario</th><th>Skills in order</th><th>Gate before the next step</th></tr>
+    <tr><td>Greenfield<span>no code yet</span></td><td><div class="chain"><code>/requirements</code><span class="arr">→</span><code>/use-case-diagram</code><span class="arr">→</span><code>/entity-model</code><span class="arr">→</span><code>/stack</code><span class="arr">→</span><code>/use-case-spec</code><span class="arr">→</span><code>/spec-review</code><span class="arr">→</span><code>/use-case-implement</code><span class="arr">→</span><code>/use-case-test</code><span class="arr">→</span><code>/use-case-coverage</code></div></td><td>Spec signed, no blocking findings, coverage closed</td></tr>
+    <tr><td>Change<span>before implementation</span></td><td><div class="chain"><code>/requirements</code><span class="arr">→</span><code>/spec-review</code> impact<span class="arr">→</span><code>/use-case-spec</code> affected UCs<span class="arr">→</span><code>/spec-review</code></div></td><td>Impact known, every affected UC updated</td></tr>
+    <tr><td>Correction<span>after implementation</span></td><td><div class="chain"><code>/use-case-spec</code><span class="arr">→</span><code>/spec-review</code><span class="arr">→</span><code>/use-case-implement</code><span class="arr">→</span><code>/use-case-test</code><span class="arr">→</span><code>/use-case-coverage</code></div></td><td>Code and spec match again</td></tr>
+    <tr><td>New feature<span>new goal or new path</span></td><td><div class="chain"><code>/requirements</code><span class="arr">→</span><code>/use-case-diagram</code><span class="arr">→</span><code class="opt">/entity-model</code><span class="arr">→</span><code>/use-case-spec</code><span class="arr">→</span> … same as greenfield</div></td><td>New UC or new flow, traced to its FR</td></tr>
+    <tr><td>Brownfield<span>existing code</span></td><td><div class="chain"><code>/stack</code><span class="arr">→</span><code>/reverse-engineer</code> per module<span class="arr">→</span>human review<span class="arr">→</span><code>/open-questions</code><span class="arr">→</span><code>/spec-review</code><span class="arr">→</span> then the rows above</div></td><td>Specs reviewed: they describe what it <i>should</i> do</td></tr>
+  </table>
+  <p class="small muted" style="margin-top:0.6em">Not sure what comes next? <code>/next</code> reads the state of <code>docs/</code> and names the next skill.</p>
+  <aside class="notes">
+    This is the map for the rest of the day. Labs 1–4 are the greenfield row, Lab 5 is the correction row.
+    Changes before implementation, new features and brownfield get their own slide later.
+    Every row ends in the same loop: spec, review, implement, test, coverage.
+  </aside>
 </section>
 
 <section>
@@ -782,6 +835,34 @@ BR-001 A reservation is at least one night.</div>
   </ul>
 </section>
 
+<section>
+  <div class="eyebrow"><b>Verification</b><span>2:31</span></div>
+  <h2>Before or after implementation?</h2>
+  <div class="cols">
+    <div class="box">
+      <h3>Change before implementation</h3>
+      <p class="muted small">The use case is specified, no code exists yet.</p>
+      <div class="chain small" style="margin:0.4em 0 0.6em"><code>/requirements</code><span class="arr">→</span><code>/spec-review</code><span class="arr">→</span><code>/use-case-spec</code><span class="arr">→</span><code>/spec-review</code></div>
+      <ul>
+        <li>Update the FR first, then the use cases that realize it</li>
+        <li><code>/spec-review</code> impact analysis: <i>“what does FR-014 affect?”</i> lists UCs, rules, test cases</li>
+        <li>Cheapest moment for a change: only text moves</li>
+      </ul>
+    </div>
+    <div class="box" style="border-color:var(--accent)">
+      <h3>Correction after implementation</h3>
+      <p class="muted small">Code and tests exist. The behavior is wrong or the rule changed.</p>
+      <div class="chain small" style="margin:0.4em 0 0.6em"><code>/use-case-spec</code><span class="arr">→</span><code>/use-case-implement</code><span class="arr">→</span><code>/use-case-test</code><span class="arr">→</span><code>/use-case-coverage</code></div>
+      <ul>
+        <li>Correct the use case first, never only the code</li>
+        <li>Failing tests show where code no longer matches</li>
+        <li>Coverage check proves spec and code match again</li>
+      </ul>
+    </div>
+  </div>
+  <p class="kicker" style="font-size:0.85em">Lab 5 is the right-hand case.</p>
+</section>
+
 <!-- ============ LAB 5 ============ -->
 <section class="lab" data-background-color="var(--lab)">
   <div class="lab-head">
@@ -816,16 +897,56 @@ BR-001 A reservation is at least one night.</div>
   </div>
 </section>
 
+<!-- ============ SCENARIOS BEYOND THE LAB ============ -->
+<section>
+  <div class="eyebrow"><b>Scenarios</b><span>2:45</span></div>
+  <h2>New feature or correction?</h2>
+  <table>
+    <tr><th>The request</th><th>What it becomes</th><th>Skills</th></tr>
+    <tr><td>A <b>new user goal</b><br><span class="muted small">“Guests can leave a review after checkout”</span></td><td>A new use case with a new UC id, traced to a new FR</td><td><div class="chain"><code>/requirements</code><span class="arr">→</span><code>/use-case-diagram</code><span class="arr">→</span><code>/use-case-spec</code><span class="arr">→</span> …</div></td></tr>
+    <tr><td>A <b>new way to reach an existing goal</b><br><span class="muted small">“Reserve by phone through the receptionist”</span></td><td>A new alternative flow, e.g. <code>3a</code>, in the existing use case</td><td><div class="chain"><code>/use-case-spec UC-###</code><span class="arr">→</span><code>/use-case-implement</code><span class="arr">→</span> …</div></td></tr>
+    <tr><td>The <b>system does it wrong</b><br><span class="muted small">“A stay is at most 14 nights”</span></td><td>A corrected step or business rule. Same UC, same id</td><td><div class="chain"><code>/use-case-spec UC-###</code><span class="arr">→</span><code>/use-case-implement</code><span class="arr">→</span> …</div></td></tr>
+  </table>
+  <div class="cols" style="margin-top:0.8em; font-size:0.78em">
+    <p><b>Why it matters:</b> a new use case adds code and tests; a correction changes existing ones. Existing tests must stay green for a feature and must fail first for a correction.</p>
+    <p><b>Rule of thumb:</b> if the actor's goal changes, it is a new use case. If only the path or a rule changes, edit the existing one.</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow"><b>Scenarios</b><span>2:47</span></div>
+  <h2>Brownfield: from code back to the spec</h2>
+  <div class="cols" style="grid-template-columns: 1.25fr 1fr; align-items:start">
+    <div class="step-list">
+      <div class="box"><span class="n">1</span><div><code>/stack</code><p>Detects layers and modules from the build files and the source tree</p></div></div>
+      <div class="box"><span class="n">2</span><div><code>/reverse-engineer</code>, one module at a time<p>Use case diagram, one spec per use case, entity model from the database</p></div></div>
+      <div class="box"><span class="n">3</span><div>Human review with the business<p>The code shows what the system does, not what it should do. Bugs become open questions</p></div></div>
+      <div class="box"><span class="n">4</span><div><code>/open-questions</code> and <code>/spec-review</code><p>Gaps recorded, contradictions found, then the specs are the baseline</p></div></div>
+      <div class="box" style="border-color:var(--accent)"><span class="n">5</span><div>Continue with the same workflow<p>Every change from now on: change, correction or new feature</p></div></div>
+    </div>
+    <div class="box">
+      <h3>Large codebases</h3>
+      <ul>
+        <li>The agent sees only what fits in its context</li>
+        <li>Reverse engineer per module, not the whole system at once</li>
+        <li>A modular structure keeps the context small: one module, its use cases, its entities</li>
+        <li>No clear modules yet? Make cutting them part of the modernization</li>
+        <li>Start with the module you will change next, not with all of them</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ============ PART 3: PRACTICE ============ -->
 <section class="divider">
-  <div class="eyebrow"><b>Part 3</b><span>2:45</span></div>
+  <div class="eyebrow"><b>Part 3</b><span>2:49</span></div>
   <div class="num">03 · PRACTICE</div>
   <h2>Lessons from customer projects</h2>
   <p>What changes when a team works like this every day.</p>
 </section>
 
 <section>
-  <div class="eyebrow"><b>Practice</b><span>2:45</span></div>
+  <div class="eyebrow"><b>Practice</b><span>2:49</span></div>
   <h2>Two bottlenecks</h2>
   <div class="cols">
     <div class="box">
@@ -853,7 +974,7 @@ BR-001 A reservation is at least one night.</div>
 </section>
 
 <section>
-  <div class="eyebrow"><b>Practice</b><span>2:47</span></div>
+  <div class="eyebrow"><b>Practice</b><span>2:50</span></div>
   <h2>Risk-based review at Anthropic</h2>
   <div class="review">
     <ol class="steps">
@@ -887,7 +1008,7 @@ BR-001 A reservation is at least one night.</div>
 </section>
 
 <section>
-  <div class="eyebrow"><b>Token economy</b><span>2:49</span></div>
+  <div class="eyebrow"><b>Token economy</b><span>2:51</span></div>
   <h2>Input tokens drive the cost</h2>
   <div class="cols">
     <div>
@@ -910,7 +1031,7 @@ BR-001 A reservation is at least one night.</div>
 </section>
 
 <section>
-  <div class="eyebrow"><b>Risks</b><span>2:51</span></div>
+  <div class="eyebrow"><b>Risks</b><span>2:52</span></div>
   <h2>Risks and how to handle them</h2>
   <table>
     <tr><th>Risk</th><th>Mitigation</th></tr>
@@ -976,6 +1097,21 @@ BR-001 A reservation is at least one night.</div>
     <dt>AI Unified Process</dt><dd><a href="https://unifiedprocess.ai" target="_blank" rel="noopener">unifiedprocess.ai</a></dd>
     <dt>Lab</dt><dd><a href="https://github.com/martinelli-workshops/sdd-lab-3" target="_blank" rel="noopener">github.com/martinelli-workshops/sdd-lab-3</a></dd>
   </dl>
+</section>
+
+<!-- ============ BACKUP ============ -->
+<section class="agents">
+  <div class="eyebrow"><b>Backup</b><span>Agentic Platform</span></div>
+  <h2>From skills to dedicated agents</h2>
+  <table>
+    <tr><th>Agent</th><th>Skills</th><th>Produces</th></tr>
+    <tr><td><b>Requirements</b></td><td><code>/requirements</code> <code>/open-questions</code></td><td>Requirements catalog, glossary, open questions</td></tr>
+    <tr><td><b>Specification</b></td><td><code>/use-case-diagram</code> <code>/entity-model</code> <code>/use-case-spec</code> <code>/reverse-engineer</code></td><td>Use cases, entity model</td></tr>
+    <tr><td><b>Implementation</b></td><td><code>/use-case-implement</code> and the layer skills</td><td>Code with UC/BR markers</td></tr>
+    <tr><td><b>Test</b></td><td><code>/use-case-test</code> <code>/test-case</code> <code>/test-case-implement</code></td><td>Tests per flow and business rule</td></tr>
+    <tr class="hl"><td><b>Review</b></td><td><code>/spec-review</code> <code>/use-case-coverage</code></td><td>Findings, impact analysis, coverage matrix</td></tr>
+  </table>
+  <p class="small muted" style="margin-top:0.8em">The use cases are the contract between the agents. Each agent reads and writes only its own artifacts. Details on 1 December.</p>
 </section>
 
 </div>
